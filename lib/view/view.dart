@@ -14,6 +14,22 @@ class HomeView extends GetWidget<NewsViewModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            label: 'Sports',
+              icon: Icon(Icons.sports_football)
+          ),
+          BottomNavigationBarItem(
+              label: 'Science',
+              icon: Icon(Icons.science)
+          ),
+          BottomNavigationBarItem(
+              label: 'Health',
+              icon: Icon(Icons.health_and_safety)
+          )
+        ],
+      ),
       body: FutureBuilder(
           future: controller.getData(),
           builder: (context, AsyncSnapshot snapshot) {
