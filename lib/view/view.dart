@@ -5,16 +5,30 @@ import 'package:news_app_flutter_mvvm/viewmodel/news_viewmodel.dart';
 
 import '../model/news_model.dart';
 
-class HomeView extends GetWidget<NewsViewModel> {
+class HomeView extends StatefulWidget {
+
+  const HomeView({Key? key}) : super(key: key);
+
   @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
   final controller = Get.put(NewsViewModel());
 
-  HomeView({Key? key}) : super(key: key);
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (val){
+          setState(() {
+            _currentIndex = val;
+          });
+
+        },
         items: const [
           BottomNavigationBarItem(
             label: 'Sports',
