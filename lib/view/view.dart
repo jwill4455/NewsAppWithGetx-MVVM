@@ -1,9 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:news_app_flutter_mvvm/view/bottom_navigation_bar/health.dart';
+import 'package:news_app_flutter_mvvm/view/bottom_navigation_bar/sports.dart';
 import 'package:news_app_flutter_mvvm/viewmodel/news_viewmodel.dart';
 
-import '../model/news_model.dart';
+import 'bottom_navigation_bar/favorites.dart';
+import 'bottom_navigation_bar/science.dart';
 
 class HomeView extends StatefulWidget {
 
@@ -18,10 +20,42 @@ class _HomeViewState extends State<HomeView> {
 
   int _currentIndex = 0;
 
+  List<Widget> screens=[
+    Sports(),
+    Science(),
+    Health(),
+    Favorites()
+  ];
   @override
   Widget build(BuildContext context) {
+
+
+
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Colors.black,
+        title: const Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                text: 'News', style: TextStyle(
+                fontSize: 25, fontWeight: FontWeight.bold, color: Colors.orange
+              ),
+              ),
+              TextSpan(
+                text: 'App', style: TextStyle(
+                  fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white
+              ),
+              )
+            ]
+          )
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
+        showUnselectedLabels: true,
+        unselectedItemColor: Colors.grey,
+        selectedItemColor: Colors.orange,
         currentIndex: _currentIndex,
         onTap: (val){
           setState(() {
@@ -41,40 +75,14 @@ class _HomeViewState extends State<HomeView> {
           BottomNavigationBarItem(
               label: 'Health',
               icon: Icon(Icons.health_and_safety)
+          ),
+          BottomNavigationBarItem(
+              label: 'Favorites',
+              icon: Icon(Icons.favorite)
           )
         ],
       ),
-      body: FutureBuilder(
-          future: controller.getData(),
-          builder: (context, AsyncSnapshot snapshot) {
-            NewsModel? data = snapshot.data;
-            if (snapshot.hasData) {
-              return ListView.builder(
-                  itemCount: data!.articles!.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        Image.network(
-                          data.articles![index].urlToImage.toString(),
-                          fit: BoxFit.fill,
-                        ),
-                        Text(
-                          data.articles![index].title.toString(),
-                          style: const TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          data.articles![index].description.toString(),
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
-                        ),
-                      ],
-                    );
-                  });
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          }),
+      body: screens[_currentIndex]
     );
   }
 }
