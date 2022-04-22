@@ -12,6 +12,12 @@ class NewsDetail extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(articles.title.toString()),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Icon(Icons.favorite),
+          ),
+        ],
       ),
       body: Column(
         children: [
