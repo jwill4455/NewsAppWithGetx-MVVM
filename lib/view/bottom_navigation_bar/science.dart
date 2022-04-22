@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:news_app_flutter_mvvm/viewmodel/news_viewmodel.dart';
+import 'package:news_app_flutter_mvvm/viewmodel/services/news_viewmodel.dart';
 
 import '../../model/news_model.dart';
 import '../details.dart';

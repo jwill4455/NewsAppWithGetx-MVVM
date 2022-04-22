@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_app_flutter_mvvm/view/bottom_navigation_bar/health.dart';
 import 'package:news_app_flutter_mvvm/view/bottom_navigation_bar/sports.dart';
-import 'package:news_app_flutter_mvvm/viewmodel/news_viewmodel.dart';
+import 'package:news_app_flutter_mvvm/viewmodel/services/news_viewmodel.dart';
 
 import 'bottom_navigation_bar/favorites.dart';
 import 'bottom_navigation_bar/science.dart';
@@ -26,10 +26,11 @@ class _HomeViewState extends State<HomeView> {
     Health(),
     Favorites()
   ];
+
+
+
   @override
   Widget build(BuildContext context) {
-
-
 
     return Scaffold(
       appBar: AppBar(
@@ -52,6 +53,7 @@ class _HomeViewState extends State<HomeView> {
           )
         ),
       ),
+
       bottomNavigationBar: BottomNavigationBar(
         showUnselectedLabels: true,
         unselectedItemColor: Colors.grey,
@@ -82,7 +84,8 @@ class _HomeViewState extends State<HomeView> {
           )
         ],
       ),
-      body: screens[_currentIndex]
+        body: screens[_currentIndex]
     );
+
   }
 }
