@@ -1,8 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_app_flutter_mvvm/view/view.dart';
 
 void main() {
+  Firebase.initializeApp();
   runApp(const MyApp());
 }
 
