@@ -4,12 +4,14 @@ import 'package:get/get.dart';
 import 'package:news_app_flutter_mvvm/view/view.dart';
 
 void main() {
-  Firebase.initializeApp();
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,19 @@ class MyApp extends StatelessWidget {
               backgroundColor: Colors.black
           )
       ),
-      home: const HomeView(),
+       home: FutureBuilder(
+         future: _initialization,
+         builder: (context, snapshot){
+           if(snapshot.hasError){
+             return const Center(child: Text('Unexpected error occured'));
+           } else if(snapshot.hasData){
+             return const HomeView();
+           } else {
+             return const Center(child:CircularProgressIndicator());
+           }
+         }
+       ),
+        //home: const HomeView(),
     );
   }
 }

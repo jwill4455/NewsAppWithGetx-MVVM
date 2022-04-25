@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_app_flutter_mvvm/viewmodel/services/news_viewmodel.dart';
 
-import '../../model/news_model.dart';
+import '../../model/article_model.dart';
 import '../details.dart';
+
 
 class Sports extends GetWidget<NewsViewModel> {
   @override
@@ -11,18 +12,27 @@ class Sports extends GetWidget<NewsViewModel> {
 
   Sports({Key? key}) : super(key: key);
 
+    List<NewsModel> listData=[];
+
+
+    Future<void> getDataApi() async {
+     listData= (await controller.getData('sports'))!;
+
+    }
+
   @override
   Widget build(BuildContext context) {
 
 
       return FutureBuilder(
-            future: controller.getData('sports'),
+            future: getDataApi(),
             builder: (context, AsyncSnapshot snapshot) {
              NewsModel? data = snapshot.data;
-              if (snapshot.hasData) {
+              if (listData.isNotEmpty) {
                 return ListView.builder(
-                    itemCount: data!.articles!.length,
+                    itemCount: listData.length,
                     itemBuilder: (context, index)  {
+                      final model = listData[index];
 
                       return InkWell(
                       onTap: (){
@@ -30,7 +40,7 @@ class Sports extends GetWidget<NewsViewModel> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => NewsDetail(
-                                  articles: data.articles![index]
+                                  articles: model.articles![index]
                                 )
                             )
                         );
@@ -39,16 +49,16 @@ class Sports extends GetWidget<NewsViewModel> {
                         child: Column(
                       children: [
                           Image.network(
-                            data.articles![index].urlToImage.toString(),
+                            model.articles![index].urlToImage.toString(),
                             fit: BoxFit.fill,
                           ),
                           Text(
-                            data.articles![index].title.toString(),
+                            model.articles![index].title.toString(),
                             style: const TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            data.articles![index].description.toString(),
+                            model.articles![index].description.toString(),
                             style: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
                           ),

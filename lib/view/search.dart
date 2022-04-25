@@ -1,6 +1,6 @@
-import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 
+import '../model/article_model.dart';
 import '../model/news_model.dart';
 import '../viewmodel/services/news_viewmodel.dart';
 import 'details.dart';
@@ -73,23 +73,10 @@ class SearchUser extends SearchDelegate{
                 );
               }
           );
-        }
-        else if(query.isEmpty) {
 
-          return Bubble(
-              margin: const BubbleEdges.symmetric(
-                   horizontal: 100,
-              ),
-              nip: BubbleNip.leftTop,
-              color: const Color.fromRGBO(
-                  168, 13, 57, 1.0
-              ),
-              child: const Text(
-                  'Please fill out this field', textAlign: TextAlign.start,
-                style: TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white
-              ),
-              )
+        } else if(query.isEmpty){
+          return const Center(
+              child: Text('please fill out this field')
           );
         }
 
@@ -101,6 +88,7 @@ class SearchUser extends SearchDelegate{
       },
     );
   }
+
 
   @override
   Widget buildSuggestions(BuildContext context) {

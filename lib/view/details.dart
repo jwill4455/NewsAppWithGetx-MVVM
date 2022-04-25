@@ -1,32 +1,58 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app_flutter_mvvm/model/news_model.dart';
+
+import '../model/article_model.dart';
 
 
-class NewsDetail extends StatelessWidget {
 
-  final Articles articles;
+class NewsDetail extends StatefulWidget {
+
+  final Article articles;
+
   NewsDetail({required this.articles});
+
+  @override
+  State<NewsDetail> createState() => _NewsDetailState();
+}
+
+class _NewsDetailState extends State<NewsDetail> {
+
+  Future addToFavorite() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    var currentUser = _auth.currentUser;
+    CollectionReference _collectionRef =
+    FirebaseFirestore.instance.collection("users-favourite-items");
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(articles.title.toString()),
-        actions: const [
+        title: Text(widget.articles.title.toString()),
+        actions: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Icon(Icons.favorite),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: IconButton(
+              icon: const Icon(
+                Icons.favorite,
+                color: Colors.red,
+              ), onPressed: () {
+
+            },
+            ),
           ),
         ],
       ),
       body: Column(
         children: [
           Image.network(
-            articles.urlToImage.toString(),
+            widget.articles.urlToImage.toString(),
             fit: BoxFit.fill,
           ),
           Text(
-            articles.description.toString(),
+            widget.articles.description.toString(),
             style: const TextStyle(
                 fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
           ),
