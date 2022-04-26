@@ -8,7 +8,7 @@ import '../details.dart';
 
 class Health extends GetWidget<NewsViewModel> {
   @override
-  final controller = Get.put(NewsViewModel());
+  final controller = Get.find();
 
   Health({Key? key}) : super(key: key);
 
