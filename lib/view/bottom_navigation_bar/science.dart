@@ -8,7 +8,7 @@ import '../details.dart';
 
 class Science extends GetWidget<NewsViewModel> {
   @override
-  final controller = Get.put(NewsViewModel());
+  final controller = Get.find();
 
   Science({Key? key}) : super(key: key);
 
