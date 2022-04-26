@@ -5,34 +5,24 @@ import 'package:news_app_flutter_mvvm/viewmodel/services/news_viewmodel.dart';
 import '../../model/article_model.dart';
 import '../details.dart';
 
-
 class Sports extends GetWidget<NewsViewModel> {
   @override
   final controller = Get.put(NewsViewModel());
 
   Sports({Key? key}) : super(key: key);
 
-    List<NewsModel> listData=[];
-
-
-    Future<void> getDataApi() async {
-     listData= (await controller.getData('sports'))!;
-
-    }
-
   @override
   Widget build(BuildContext context) {
 
 
       return FutureBuilder(
-            future: getDataApi(),
+            future: controller.getData('sports'),
             builder: (context, AsyncSnapshot snapshot) {
              NewsModel? data = snapshot.data;
-              if (listData.isNotEmpty) {
+              if (snapshot.hasData) {
                 return ListView.builder(
-                    itemCount: listData.length,
+                    itemCount: data!.articles!.length,
                     itemBuilder: (context, index)  {
-                      final model = listData[index];
 
                       return InkWell(
                       onTap: (){
@@ -40,7 +30,7 @@ class Sports extends GetWidget<NewsViewModel> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => NewsDetail(
-                                  articles: model.articles![index]
+                                  articles: data.articles![index]
                                 )
                             )
                         );
@@ -49,16 +39,16 @@ class Sports extends GetWidget<NewsViewModel> {
                         child: Column(
                       children: [
                           Image.network(
-                            model.articles![index].urlToImage.toString(),
+                            data.articles![index].urlToImage.toString(),
                             fit: BoxFit.fill,
                           ),
                           Text(
-                            model.articles![index].title.toString(),
+                            data.articles![index].title.toString(),
                             style: const TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            model.articles![index].description.toString(),
+                            data.articles![index].description.toString(),
                             style: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
                           ),
