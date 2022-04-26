@@ -11,18 +11,15 @@ class NewsViewModel extends GetxController {
   static String baseUrl = 'https://newsapi.org';
   static String myApiKey = '656195782efe42c4a6111ad1b2c0a00c';
 
-  Future<List<NewsModel>?> getData(String? category) async {
-    final url = Uri.parse(
-        '$baseUrl/v2/top-headlines?country=tr&category=$category&apiKey=$myApiKey'
-    );
+  getData(String? category) async {
+    final url = Uri.parse('$baseUrl/v2/top-headlines?country=tr&category=$category&apiKey=$myApiKey');
 
     http.Response response = await http.get(url);
     if (response.statusCode == 200) {
-      try { log(jsonDecode(response.body).toString());
-
-     // return datas.map((e) => NewsModel.fromJson(e)).toList();
-      }
-      catch (e) {
+      try {
+        final datas = jsonDecode(response.body);
+        return NewsModel.fromJson(datas);
+      } catch (e) {
         Get.snackbar('can not get any data', e.toString());
       }
     }
