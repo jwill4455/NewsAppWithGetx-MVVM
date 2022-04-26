@@ -5,9 +5,11 @@ class Article {
   String? title;
   String? description;
   String? urlToImage;
+  String? url;
 
   Article(
       {
+        required this.url,
       required this.source,
       required this.title,
       required this.description,
@@ -17,9 +19,10 @@ class Article {
   factory Article.fromJson(Map<String, dynamic> json) {
     return Article(
         source: Source.fromJson(json['source']),
-        title: json['title'] as String,
-        description: json['description'] as String,
-        urlToImage: json['urlToImage'] as String
+        title: json['title'],
+        url: json['url'],
+        description: json['description'],
+        urlToImage: json['urlToImage']
     );
   }
 }
