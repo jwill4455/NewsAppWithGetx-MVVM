@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../model/article_model.dart';
-import '../model/news_model.dart';
+import '../data/model/article_model.dart';
 import '../viewmodel/services/news_viewmodel.dart';
 import 'details.dart';
 
@@ -12,8 +10,8 @@ class SearchUser extends SearchDelegate{
     return[
       IconButton(icon: const Icon(Icons.close),
       onPressed: (){
-        Navigator.pop(context);
-    },
+        query = '';
+      },
     )
     ];
   }
@@ -76,7 +74,7 @@ class SearchUser extends SearchDelegate{
 
         } else if(query.isEmpty){
           return const Center(
-              child: Text('please fill out this field')
+              child: Text('No results found')
           );
         }
 
@@ -92,11 +90,68 @@ class SearchUser extends SearchDelegate{
 
   @override
   Widget buildSuggestions(BuildContext context) {
-     return const Center(
-       child: Text(
-         'Search Users'
-       ),
-     );
+
+    return FutureBuilder(
+      future: controller.searchData(query),
+      builder: (context, AsyncSnapshot snapshot) {
+        NewsModel? data = snapshot.data;
+        if (snapshot.hasData) {
+          return ListView.builder(
+              itemCount: data!.articles!.length,
+              itemBuilder: (context, index)  {
+
+                return InkWell(
+                  onTap: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => NewsDetail(
+                                articles: data.articles![index]
+                            )
+                        )
+                    );
+                  },
+
+                  child: Column(
+                    children: [
+                      Image.network(
+                        data.articles![index].urlToImage.toString(),
+                        fit: BoxFit.fill,
+                      ),
+                      Text(
+                        data.articles![index].title.toString(),
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        data.articles![index].description.toString(),
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                );
+              }
+          );
+
+        } else if(query.isEmpty) {
+          return const Center(
+              child: Text(
+                  'Search Users'
+              )
+          );
+        }
+
+        else {
+          return const Center(
+              child: CircularProgressIndicator()
+          );
+        }
+      },
+    );
+
+
+
   }
-  
+
 }
