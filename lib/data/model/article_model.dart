@@ -1,4 +1,4 @@
-import 'package:news_app_flutter_mvvm/model/source_model.dart';
+import 'source_model.dart';
 
 class Article {
   Source? source;
@@ -9,21 +9,21 @@ class Article {
 
   Article(
       {
-        required this.url,
-      required this.source,
-      required this.title,
-      required this.description,
-      required this.urlToImage
+        this.url,
+        this.source,
+        this.title,
+        this.description,
+        this.urlToImage
       }
       );
+
   factory Article.fromJson(Map<String, dynamic> json) {
     return Article(
         source: Source.fromJson(json['source']),
         title: json['title'],
         url: json['url'],
         description: json['description'],
-        urlToImage: json['urlToImage']
-    );
+        urlToImage: json['urlToImage']);
   }
 }
 
@@ -36,5 +36,4 @@ class NewsModel {
     articles =
         (json['articles'] as List).map((e) => Article.fromJson(e)).toList();
   }
-
 }
