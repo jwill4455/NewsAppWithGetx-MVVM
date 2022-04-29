@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_app_flutter_mvvm/viewmodel/services/news_viewmodel.dart';
-import '../../firebase/favorites_firebase.dart';
-import '../../model/article_model.dart';
+import '../../data/firebase/favorites_firebase.dart';
+import '../../data/model/article_model.dart';
 import '../details.dart';
+import 'package:news_app_flutter_mvvm/extensions/constants.dart';
 
 class Sports extends GetWidget<NewsViewModel> {
 
@@ -26,6 +27,7 @@ class Sports extends GetWidget<NewsViewModel> {
               itemCount: data!.articles!.length,
               itemBuilder: (context, index) {
                 return InkWell(
+                  splashColor: Colors.red,
                   onTap: () {
                     Navigator.push(
                         context,
@@ -42,6 +44,19 @@ class Sports extends GetWidget<NewsViewModel> {
                             Image.network(
                               data.articles![index].urlToImage.toString(),
                               fit: BoxFit.fill,
+                              loadingBuilder: (BuildContext context, Widget child,
+                                  ImageChunkEvent? loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.grey,
+                                    value: loadingProgress.expectedTotalBytes != null
+                                        ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                        : null,
+                                  ),
+                                );
+                              },
                             ),
                             Text(
                               data.articles![index].title.toString(),
@@ -58,9 +73,10 @@ class Sports extends GetWidget<NewsViewModel> {
                           ],
                         ),
                       ),
-                      StreamBuilder<QuerySnapshot>(
+
+                      StreamBuilder(
                         stream: FirebaseFirestore.instance
-                          .collection("user-favourite-items")
+                          .collection(Constants.collectionName)
                           .where("title", isEqualTo: data.articles![index].title)
                           .snapshots(),
                           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -69,23 +85,26 @@ class Sports extends GetWidget<NewsViewModel> {
                             }
                           return Expanded(
                             flex: 1,
-                            child: IconButton(
-                              onPressed: () => snapshot.data!.docs.isEmpty
-                                  ? _favorites.addToFavorite(
-                                data.articles![index].title.toString(),
-                                data.articles![index].description.toString(),
-                                data.articles![index].url.toString(),
-                                data.articles![index].urlToImage.toString(),
-                              )
-                                  :print("Already Added"),
-                              icon: snapshot.data!.docs.isEmpty
-                                  ? const Icon(
-                                Icons.favorite,
-                                color: Colors.yellow,
-                              )
-                                  : const Icon(
-                                Icons.favorite,
-                                color: Colors.red,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.black,
+                               child: IconButton(
+                                onPressed: () => snapshot.data.docs.length == 0
+                                    ? _favorites.addToFavorite(
+                                  data.articles![index].title.toString(),
+                                  data.articles![index].description.toString(),
+                                  data.articles![index].url.toString(),
+                                  data.articles![index].urlToImage.toString(),
+                                )
+                                    :print("Already Added"),
+                                icon: snapshot.data.docs.length == 0
+                                    ? const Icon(
+                                  Icons.favorite,
+                                  color: Colors.white,
+                                )
+                                    : const Icon(
+                                  Icons.favorite,
+                                  color: Colors.red,
+                                ),
                               ),
                             ),
                           );
