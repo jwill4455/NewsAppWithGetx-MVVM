@@ -1,18 +1,15 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:news_app_flutter_mvvm/model/article_model.dart';
+import 'package:news_app_flutter_mvvm/extensions/constants.dart';
+
+import '../../data/model/article_model.dart';
 
 
 class NewsViewModel extends GetxController {
 
-  static String baseUrl = 'https://newsapi.org';
-  static String myApiKey = '656195782efe42c4a6111ad1b2c0a00c';
-
   getData(String? category) async {
-    final url = Uri.parse('$baseUrl/v2/top-headlines?country=tr&category=$category&apiKey=$myApiKey');
+    final url = Uri.parse('${Constants.baseUrl}/v2/top-headlines?country=tr&category=$category&apiKey=${Constants.myApiKey}');
 
     http.Response response = await http.get(url);
     if (response.statusCode == 200) {
@@ -27,7 +24,7 @@ class NewsViewModel extends GetxController {
   List<Article> results = [];
   searchData(String? query) async {
     final url = Uri.parse(
-        '$baseUrl/v2/everything/?q=$query&apiKey=$myApiKey'
+        '${Constants.baseUrl}/v2/everything/?q=$query&apiKey=${Constants.myApiKey}'
     );
     http.Response response = await http.get(url);
     if (response.statusCode == 200) {
