@@ -24,24 +24,39 @@ class _FavoritesState extends State<Favorites> {
             );
           }
           return ListView.builder(
-              itemCount: snapshot.data!.docs.length,
+              itemCount: snapshot.data?.docs.length ?? 0,
               itemBuilder: (_, index) {
                 DocumentSnapshot _documentSnapshot = snapshot.data!.docs[index];
                 return Card(
-                  elevation: 5,
-                  child: ListTile(
-                    leading: Text(_documentSnapshot["title"]),
-                    trailing: GestureDetector(
-                      child: const CircleAvatar(
-                        child:  Icon(Icons.remove_circle),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: ListTile(
+                          leading: Text(
+                              _documentSnapshot["title"]
+                          ),
+                        ),
                       ),
-                      onTap: (){
-                        FirebaseFirestore.instance.collection("users-favourite-items").doc(_documentSnapshot.id).delete();
-                      },
-                    ),
+
+                       Expanded(
+                         flex: 1,
+                         child: ListTile(
+                            trailing: GestureDetector(
+                              child: const CircleAvatar(
+                                child:  Icon(Icons.remove_circle),
+                              ),
+                              onTap: (){
+                                FirebaseFirestore.instance.collection("users-favourite-items").doc(_documentSnapshot.id).delete();
+                              },
+                            ),
+                      ),
+                       ),
+                    ],
                   ),
                 );
-              });
+              }
+              );
         },
       )),
     );
