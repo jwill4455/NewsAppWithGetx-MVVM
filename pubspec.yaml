@@ -41,8 +41,13 @@ dependencies:
   bubble: ^1.2.1
   firebase_core: ^1.15.0
   cloud_firestore: ^3.1.13
-  favorite_button: ^0.0.4
   firebase_auth: ^3.3.15
+  flutter_native_splash: ^2.1.6
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: assets/splash.png
+
 
 dev_dependencies:
   flutter_test:
