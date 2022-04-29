@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:news_app_flutter_mvvm/firebase/favorites_firebase.dart';
-
-import '../model/article_model.dart';
+import 'package:news_app_flutter_mvvm/extensions/constants.dart';
+import '../data/firebase/favorites_firebase.dart';
+import '../data/model/article_model.dart';
 
 class NewsDetail extends StatefulWidget {
   final Article articles;
@@ -27,7 +27,7 @@ class _NewsDetailState extends State<NewsDetail> {
         actions: [
           StreamBuilder(
             stream: FirebaseFirestore.instance
-                .collection("users-favourite-items")
+                .collection(Constants.collectionName)
                 .where("title", isEqualTo: widget.articles.title)
                 .snapshots(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
